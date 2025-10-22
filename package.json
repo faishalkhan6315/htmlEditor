@@ -1,6 +1,7 @@
 {
   "name": "visual-html-editor",
   "version": "1.0.0",
+  "type": "module",
   "description": "A visual HTML editor with drag-and-drop functionality",
   "main": "index.html",
   "scripts": {

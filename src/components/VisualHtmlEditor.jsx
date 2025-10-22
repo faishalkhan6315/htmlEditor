@@ -136,42 +136,41 @@ export default function VisualHtmlEditor() {
   }
 
   return (
-    <div className="p-4 min-h-screen bg-gray-50">
+    <div className="p-4 min-h-screen gradient-bg">
       <div className="max-w-[1200px] mx-auto">
-        <h1 className="text-2xl font-semibold mb-4">Visual HTML Editor</h1>
+        <h1 className="text-3xl font-bold mb-6 text-white text-center fade-in">🎨 Visual HTML Editor</h1>
 
-        <div className="flex gap-4">
+        <div className="flex gap-6">
           {/* Left: controls */}
-          <div className="w-72 bg-white rounded-2xl shadow p-4 sticky top-4 h-[620px] overflow-auto">
-            <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700">Import HTML</label>
-              <input ref={fileInputRef} onChange={handleImportFile} type="file" accept="text/html" className="mt-2" />
-              <button className="mt-3 w-full rounded-md border px-3 py-2" onClick={() => { setHtmlSource(prev => prev); fileInputRef.current && (fileInputRef.current.value = ''); }}>Reload</button>
+          <div className="w-80 modern-card rounded-3xl shadow-strong p-6 sticky top-4 h-[650px] overflow-auto slide-up">
+            <div className="mb-6">
+              <label className="block text-sm font-semibold text-gray-800 mb-2">📁 Import HTML</label>
+              <input ref={fileInputRef} onChange={handleImportFile} type="file" accept="text/html" className="mt-2 modern-input w-full p-3 rounded-xl" />
+              <button className="mt-3 w-full btn-secondary py-3 rounded-xl font-medium" onClick={() => { setHtmlSource(prev => prev); fileInputRef.current && (fileInputRef.current.value = ''); }}>🔄 Reload</button>
             </div>
 
-            <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700">Canvas width</label>
-              <input type="range" min="320" max="1200" value={designWidth} onChange={(e) => setDesignWidth(Number(e.target.value))} />
-              <div className="text-xs text-gray-500">{designWidth}px</div>
+            <div className="mb-6">
+              <label className="block text-sm font-semibold text-gray-800 mb-2">📏 Canvas Width</label>
+              <input type="range" min="320" max="1200" value={designWidth} onChange={(e) => setDesignWidth(Number(e.target.value))} className="w-full" />
+              <div className="text-sm text-gray-600 font-medium mt-1">{designWidth}px</div>
             </div>
 
-            <div className="mb-4">
-              <button onClick={handleExport} className="w-full bg-blue-600 text-white py-2 rounded-md">Export HTML</button>
+            <div className="mb-6">
+              <button onClick={handleExport} className="w-full btn-primary py-3 rounded-xl font-semibold text-lg">💾 Export HTML</button>
             </div>
 
-            <div className="border-t pt-3">
-              <h3 className="font-medium">Selected Element</h3>
+            <div className="border-t border-gray-200 pt-6">
+              <h3 className="font-bold text-lg text-gray-800 mb-4">🎯 Selected Element</h3>
               {selectedId ? (
-                <div className="mt-2">
-                  <div className="text-xs text-gray-500 mb-2">ID: {selectedId}</div>
-                  <div className="mb-2">
-                    <label className="text-sm">Edit text / HTML</label>
+                <div className="space-y-4">
+                  <div className="text-xs text-gray-500 bg-gray-100 p-2 rounded-lg font-mono">ID: {selectedId}</div>
+                  
+                  <div>
+                    <label className="text-sm font-semibold text-gray-700 mb-2 block">✏️ Edit Text / HTML</label>
                     <textarea
-                      className="w-full mt-1 border rounded p-2 text-sm h-24"
+                      className="w-full modern-input rounded-xl p-3 text-sm h-24 resize-none"
                       defaultValue={selectionInfo?.outerHTML ?? ''}
                       onBlur={(e) => {
-                        // when user finishes editing, set innerHTML via applyProps
-                        // user can paste HTML — we'll set innerHTML
                         const temp = document.createElement('div');
                         temp.innerHTML = e.target.value;
                         const newInner = temp.innerHTML;
@@ -180,54 +179,59 @@ export default function VisualHtmlEditor() {
                     />
                   </div>
 
-                  <div className="mb-2">
-                    <label className="text-sm">Font size</label>
-                    <input type="number" className="w-full mt-1 border rounded p-1" onBlur={(e) => applyPropsToSelected({ fontSize: e.target.value ? e.target.value + 'px' : '' })} placeholder="px" />
+                  <div>
+                    <label className="text-sm font-semibold text-gray-700 mb-2 block">🔤 Font Size</label>
+                    <input type="number" className="w-full modern-input rounded-xl p-3" onBlur={(e) => applyPropsToSelected({ fontSize: e.target.value ? e.target.value + 'px' : '' })} placeholder="px" />
                   </div>
 
-                  <div className="mb-2">
-                    <label className="text-sm">Background</label>
-                    <input type="text" className="w-full mt-1 border rounded p-1" placeholder="e.g. #fff or lightgray" onBlur={(e) => applyPropsToSelected({ background: e.target.value })} />
+                  <div>
+                    <label className="text-sm font-semibold text-gray-700 mb-2 block">🎨 Background</label>
+                    <input type="text" className="w-full modern-input rounded-xl p-3" placeholder="e.g. #fff or lightgray" onBlur={(e) => applyPropsToSelected({ background: e.target.value })} />
                   </div>
 
-                  <div className="mb-2">
-                    <label className="text-sm">Padding (px)</label>
-                    <input type="number" className="w-full mt-1 border rounded p-1" onBlur={(e) => applyPropsToSelected({ padding: e.target.value ? e.target.value + 'px' : '' })} />
+                  <div>
+                    <label className="text-sm font-semibold text-gray-700 mb-2 block">📏 Padding (px)</label>
+                    <input type="number" className="w-full modern-input rounded-xl p-3" onBlur={(e) => applyPropsToSelected({ padding: e.target.value ? e.target.value + 'px' : '' })} />
                   </div>
 
-                  <div className="mb-2">
-                    <label className="text-sm">Image replace</label>
-                    <input type="file" accept="image/*" className="w-full mt-1" onChange={(ev) => { const f = ev.target.files?.[0]; if (f) replaceImageWithFile(f); }} />
-                    <input type="text" placeholder="Image URL" className="w-full mt-2 border rounded p-1 text-sm" onBlur={(e) => applyPropsToSelected({ src: e.target.value })} />
+                  <div>
+                    <label className="text-sm font-semibold text-gray-700 mb-2 block">🖼️ Image Replace</label>
+                    <input type="file" accept="image/*" className="w-full modern-input rounded-xl p-3 mb-2" onChange={(ev) => { const f = ev.target.files?.[0]; if (f) replaceImageWithFile(f); }} />
+                    <input type="text" placeholder="Image URL" className="w-full modern-input rounded-xl p-3 text-sm" onBlur={(e) => applyPropsToSelected({ src: e.target.value })} />
                   </div>
 
-                  <div className="flex gap-2 mt-2">
-                    <button className="flex-1 rounded border px-2 py-1" onClick={() => toggleFlexDirection('row')}>Make flex row</button>
-                    <button className="flex-1 rounded border px-2 py-1" onClick={() => toggleFlexDirection('column')}>Make flex column</button>
+                  <div className="flex gap-2">
+                    <button className="flex-1 btn-secondary py-2 rounded-xl font-medium" onClick={() => toggleFlexDirection('row')}>↔️ Flex Row</button>
+                    <button className="flex-1 btn-secondary py-2 rounded-xl font-medium" onClick={() => toggleFlexDirection('column')}>↕️ Flex Column</button>
                   </div>
 
-                  <div className="mt-3 text-right">
-                    <button className="px-3 py-1 rounded border" onClick={clearSelection}>Clear</button>
+                  <div className="text-right">
+                    <button className="px-4 py-2 btn-secondary rounded-xl font-medium" onClick={clearSelection}>❌ Clear</button>
                   </div>
                 </div>
               ) : (
-                <div className="text-sm text-gray-500 mt-2">Click a block inside the canvas to select and edit it.</div>
+                <div className="text-center py-8">
+                  <div className="text-4xl mb-2">👆</div>
+                  <div className="text-sm text-gray-500">Click a block inside the canvas to select and edit it.</div>
+                </div>
               )}
             </div>
 
-            <div className="mt-4 text-xs text-gray-400">
-              Tip: click items inside the design area (right) to edit them. Use the panel above to change text, replace images or apply simple layout styles.
+            <div className="mt-6 p-4 bg-blue-50 rounded-xl border border-blue-200">
+              <div className="text-xs text-blue-700 font-medium">
+                💡 <strong>Tip:</strong> Click items inside the design area to edit them. Use the controls above to change text, replace images or apply layout styles.
+              </div>
             </div>
           </div>
 
           {/* Right: canvas area (fixed design area) */}
           <div className="flex-1">
-            <div className="bg-white rounded-2xl shadow p-3">
-              <div className="mb-2 flex items-center justify-between">
-                <div className="text-sm text-gray-600">Design area (fixed)</div>
-                <div className="text-xs text-gray-500">Preview width: {designWidth}px</div>
+            <div className="modern-card rounded-3xl shadow-strong p-6 slide-up">
+              <div className="mb-4 flex items-center justify-between">
+                <div className="text-lg font-bold text-gray-800">🎨 Design Area</div>
+                <div className="text-sm text-gray-600 bg-gray-100 px-3 py-1 rounded-full">Width: {designWidth}px</div>
               </div>
-              <div className="border rounded-lg overflow-hidden" style={{ width: designWidth + 'px', height: '600px' }}>
+              <div className="border-2 border-gray-200 rounded-2xl overflow-hidden shadow-medium" style={{ width: designWidth + 'px', height: '600px' }}>
                 <iframe
                   title="visual-editor-iframe"
                   ref={iframeRef}
@@ -236,15 +240,17 @@ export default function VisualHtmlEditor() {
                 />
               </div>
 
-              <div className="mt-3">
-                <label className="block text-sm font-medium">Raw HTML source (editable)</label>
-                <textarea className="w-full mt-1 h-40 border rounded p-2 font-mono text-xs" value={htmlSource} onChange={(e) => setHtmlSource(e.target.value)} />
+              <div className="mt-6">
+                <label className="block text-sm font-bold text-gray-800 mb-3">📝 Raw HTML Source</label>
+                <textarea className="w-full modern-input rounded-xl p-4 font-mono text-xs h-40 resize-none" value={htmlSource} onChange={(e) => setHtmlSource(e.target.value)} />
               </div>
             </div>
           </div>
         </div>
 
-        <div className="mt-6 text-sm text-gray-500">Made with ❤️ — click elements to edit text inline, replace images, and export a standalone .html file.</div>
+        <div className="mt-8 text-center">
+          <div className="text-white text-lg font-medium">Made with ❤️ — Click elements to edit text inline, replace images, and export a standalone .html file.</div>
+        </div>
       </div>
     </div>
   );
